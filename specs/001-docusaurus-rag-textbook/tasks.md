@@ -71,7 +71,7 @@
 - [X] T020 [P] [US1] Create Chapter 5: URDF — robot description format, links/joints, visualization, one Python/XML example (simple URDF), one exercise in website/docs/module1-ros2/05-urdf.md
 - [X] T021 [US1] Add Open Graph meta tags (title, description, image) to docusaurus.config.ts metadata section in website/docusaurus.config.ts
 - [X] T022 [US1] Run `npm run build` in website/ and verify zero build errors, all 7 pages render, sidebar navigation works, no broken links
-- [ ] T023 [US1] Run backend/index_content.py to chunk all markdown content, embed, and upsert to Qdrant collection `book_content`
+- [X] T023 [US1] Run backend/index_content.py to chunk all markdown content, embed, and upsert to Qdrant collection `book_content`
 
 **Checkpoint**: At this point, all 7 pages are browsable with complete content. Chatbot knowledge base is indexed. US1 is fully functional and testable independently. Deploy to GitHub Pages to verify SC-001, SC-002, SC-006.
 
@@ -123,8 +123,8 @@
 
 - [X] T038 [P] Verify mobile responsiveness: chatbot panel, popup, sidebar, code blocks render correctly on 375px and 768px viewports
 - [X] T039 [P] Run Docusaurus production build (`npm run build`) and verify zero warnings, all assets load, no console errors
-- [ ] T040 Deploy backend to Railway: set root directory to backend/, configure GEMINI_API_KEY, QDRANT_URL, QDRANT_API_KEY env vars, get public URL
-- [ ] T041 Update website/.env and GitHub Actions vars.API_URL with Railway production URL, redeploy to GitHub Pages
+- [X] T040 Deploy backend to Render: render.yaml created, code pushed to GitHub, configure GEMINI_API_KEY, QDRANT_URL, QDRANT_API_KEY env vars in Render dashboard, get public URL
+- [ ] T041 Update GitHub Actions vars.API_URL with Render production URL, redeploy to GitHub Pages
 - [ ] T042 End-to-end smoke test on deployed site: visit all 7 pages, ask chatbot 5+ questions, test selected-text query on 3+ pages, verify <3s page load and <5s chatbot response
 - [X] T043 [P] Review all pages for typos, broken links, broken images, rendering issues
 - [X] T044 Finalize README.md with actual deployed URLs, quickstart instructions verified working
