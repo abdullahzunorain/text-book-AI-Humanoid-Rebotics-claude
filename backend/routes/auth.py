@@ -9,9 +9,11 @@ from __future__ import annotations
 from typing import Any
 
 from fastapi import APIRouter, HTTPException, Request, Response
+from jose import ExpiredSignatureError, JWTError
 from pydantic import BaseModel, EmailStr, Field
 
 from auth_utils import create_token, decode_token, hash_password, verify_password
+from cookie_config import get_cookie_config
 from db import get_pool
 
 router: APIRouter = APIRouter()
@@ -21,41 +23,45 @@ _COOKIE_MAX_AGE: int = 7 * 24 * 60 * 60  # 7 days
 
 
 def _set_token_cookie(response: Response, token: str) -> None:
-    """Set JWT token in an httpOnly cookie."""
+    """Set JWT token in an httpOnly cookie with environment-aware attributes."""
+    cfg = get_cookie_config()
     response.set_cookie(
         key=_COOKIE_NAME,
         value=token,
-        httponly=True,
-        secure=True,
-        samesite="lax",
-        path="/",
-        max_age=_COOKIE_MAX_AGE,
+        httponly=cfg["httponly"],
+        secure=cfg["secure"],
+        samesite=cfg["samesite"],
+        path=cfg["path"],
+        max_age=cfg["max_age"],
     )
 
 
 def _clear_token_cookie(response: Response) -> None:
-    """Clear the JWT cookie."""
+    """Clear the JWT cookie with matching environment-aware attributes."""
+    cfg = get_cookie_config()
     response.set_cookie(
         key=_COOKIE_NAME,
         value="",
-        httponly=True,
-        secure=True,
-        samesite="lax",
-        path="/",
+        httponly=cfg["httponly"],
+        secure=cfg["secure"],
+        samesite=cfg["samesite"],
+        path=cfg["path"],
         max_age=0,
     )
 
 
 def _get_user_id_from_cookie(request: Request) -> int:
-    """Extract user_id from JWT cookie. Raises 401 if missing/invalid."""
+    """Extract user_id from JWT cookie. Raises 401 with distinct detail codes."""
     token: str | None = request.cookies.get(_COOKIE_NAME)
     if not token:
-        raise HTTPException(status_code=401, detail="Not authenticated")
+        raise HTTPException(status_code=401, detail="not_authenticated")
     try:
         payload: dict = decode_token(token)
         return payload["sub"]
-    except Exception:
-        raise HTTPException(status_code=401, detail="Not authenticated")
+    except ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="session_expired")
+    except (JWTError, Exception):
+        raise HTTPException(status_code=401, detail="invalid_token")
 
 
 # ---------------------------------------------------------------------------

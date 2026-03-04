@@ -16,6 +16,8 @@ from routes.translate import router as translate_router
 
 load_dotenv()
 
+import os  # noqa: E402
+
 from db import close_pool, init_pool  # noqa: E402
 
 
@@ -38,12 +40,9 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# CORS — allow GitHub Pages origin + local dev
-origins = [
-    "https://abdullahzunorain.github.io",
-    "http://localhost:3000",
-    "http://localhost:3001",
-]
+# CORS — read origins from env var (comma-separated), default to local dev
+_cors_raw = os.getenv("CORS_ORIGINS", "http://localhost:3000,http://localhost:3001")
+origins = [o.strip() for o in _cors_raw.split(",") if o.strip()]
 
 app.add_middleware(
     CORSMiddleware,
