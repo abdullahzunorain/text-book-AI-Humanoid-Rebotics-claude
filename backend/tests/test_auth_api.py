@@ -56,6 +56,7 @@ class TestSignup:
         data: dict = response.json()
         assert "user_id" in data
         assert data["email"] == "new@example.com"
+        assert data["has_background"] is False  # new user always has no background
         assert "token" in response.cookies or "set-cookie" in response.headers
 
     @patch("routes.auth.get_pool")

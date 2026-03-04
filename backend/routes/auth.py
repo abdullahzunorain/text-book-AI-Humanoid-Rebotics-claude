@@ -119,7 +119,7 @@ async def signup(body: SignupRequest, response: Response) -> dict[str, Any]:
     return {
         "user_id": user["id"],
         "email": user["email"],
-        "show_questionnaire": True,
+        "has_background": False,  # new user always has no background
     }
 
 
