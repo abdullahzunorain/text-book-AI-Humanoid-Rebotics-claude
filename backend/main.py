@@ -3,33 +3,39 @@ FastAPI backend for Physical AI Textbook RAG chatbot.
 Endpoints: POST /api/chat, POST /api/translate, auth routes, personalization
 """
 
+import os
 from contextlib import asynccontextmanager
 from collections.abc import AsyncIterator
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException, Request
-from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, Field
-from routes.auth import router as auth_router
-from routes.chat import router as chat_router
-from routes.personalize import router as personalize_router
-from routes.translate import router as translate_router
 
+# Load .env BEFORE any service imports so that GOOGLE_API_KEY (and other
+# env vars) are visible when agent_config.py is first imported.
 load_dotenv()
 
-import os  # noqa: E402
-
+from fastapi import FastAPI, HTTPException, Request  # noqa: E402
+from fastapi.middleware.cors import CORSMiddleware  # noqa: E402
+from pydantic import BaseModel, Field  # noqa: E402
+from routes.auth import router as auth_router  # noqa: E402
+from routes.chat import router as chat_router  # noqa: E402
+from routes.personalize import router as personalize_router  # noqa: E402
+from routes.translate import router as translate_router  # noqa: E402
 from db import close_pool, init_pool  # noqa: E402
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     """Startup/shutdown: initialize and close the DB pool."""
-    import os
-
     dsn = os.getenv("DATABASE_URL", "")
     if dsn:
-        await init_pool(dsn)
+        try:
+            await init_pool(dsn)
+        except Exception as exc:
+            import logging
+            logging.getLogger(__name__).warning(
+                "Could not connect to Postgres — auth, history, and cache will be unavailable: %s",
+                exc,
+            )
     yield
     await close_pool()
 

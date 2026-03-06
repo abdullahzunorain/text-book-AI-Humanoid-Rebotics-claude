@@ -15,6 +15,35 @@ from services.cache_service import get_cached, set_cached
 from services.agent_config import run_agent, translation_agent
 
 # ---------------------------------------------------------------------------
+# Frontmatter stripping
+# ---------------------------------------------------------------------------
+
+_FRONTMATTER_RE: re.Pattern[str] = re.compile(
+    r"^---\s*\n[\s\S]*?\n---\s*\n?", re.MULTILINE
+)
+
+
+def strip_frontmatter(markdown: str) -> str:
+    """Remove YAML frontmatter (---...---) from the start of markdown."""
+    return _FRONTMATTER_RE.sub("", markdown, count=1)
+
+
+# ---------------------------------------------------------------------------
+# LLM output cleanup
+# ---------------------------------------------------------------------------
+
+_WRAPPING_FENCE_RE: re.Pattern[str] = re.compile(
+    r"^\s*```(?:markdown|md)?\s*\n([\s\S]*?)\n\s*```\s*$"
+)
+
+
+def strip_wrapping_code_fence(text: str) -> str:
+    """Remove outer code-fence wrapper (```markdown ... ```) that LLMs sometimes add."""
+    m = _WRAPPING_FENCE_RE.match(text.strip())
+    return m.group(1) if m else text
+
+
+# ---------------------------------------------------------------------------
 # Code-block extraction
 # ---------------------------------------------------------------------------
 
@@ -54,7 +83,9 @@ _TRANSLATE_PROMPT_TEMPLATE = (
     "2. Keep ALL technical terms in English (ROS 2, Gazebo, Python, URDF, etc.).\n"
     "3. Keep ALL markdown formatting (headers #, bold **, lists -, tables, links).\n"
     "4. Keep ALL {{CODE_BLOCK_N}} placeholders EXACTLY as they are — do NOT translate them.\n"
-    "5. Preserve paragraph structure.\n\n"
+    "5. Preserve paragraph structure.\n"
+    "6. Do NOT wrap your output in code fences (``` or ```markdown). Return raw markdown ONLY.\n"
+    "7. Do NOT include any YAML frontmatter (--- ... ---) in the output.\n\n"
     "TEXT TO TRANSLATE:\n\n"
     "{prose}"
 )
@@ -70,10 +101,12 @@ async def translate_to_urdu(
     *,
     user_id: int,
     chapter_slug: str,
+    force_refresh: bool = False,
 ) -> dict[str, str | list[str]]:
     """Translate a chapter markdown to Urdu, preserving code blocks.
 
-    Checks cache first; on miss, calls LLMClient with failover and caches the result.
+    Checks cache first (unless force_refresh=True); on miss, calls Translation Agent
+    and caches the result.
 
     Args:
         chapter_markdown: Full chapter markdown content.
@@ -86,9 +119,12 @@ async def translate_to_urdu(
     """
     prose, blocks = extract_code_blocks(chapter_markdown)
 
+    # Strip YAML frontmatter from prose before sending to LLM
+    prose = strip_frontmatter(prose)
+
     # Check cache first
     cached = await get_cached(user_id, chapter_slug, "translation")
-    if cached is not None:
+    if cached is not None and not force_refresh:
         return {
             "translated_content": cached,
             "original_code_blocks": blocks,
@@ -97,6 +133,10 @@ async def translate_to_urdu(
     # Call Translation Agent
     prompt = _TRANSLATE_PROMPT_TEMPLATE.format(prose=prose)
     translated_prose: str = await run_agent(translation_agent, input=prompt)
+
+    # Clean up LLM output: strip wrapping code fences and stale frontmatter
+    translated_prose = strip_wrapping_code_fence(translated_prose)
+    translated_prose = strip_frontmatter(translated_prose)
 
     # Re-insert original code blocks at placeholder positions
     for idx, block in enumerate(blocks):

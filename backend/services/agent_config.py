@@ -103,7 +103,7 @@ translation_agent = Agent(
     name="translator",
     instructions=TRANSLATION_SYSTEM_PROMPT,
     model=_model,
-    model_settings=ModelSettings(temperature=0.3, max_tokens=4096),
+    model_settings=ModelSettings(temperature=0.3, max_tokens=16000),
 )
 
 # ---------------------------------------------------------------------------

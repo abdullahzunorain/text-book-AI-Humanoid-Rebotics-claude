@@ -81,6 +81,7 @@ def _check_rate_limit(client_ip: str) -> None:
 
 class TranslateRequest(BaseModel):
     chapter_slug: str = Field(..., min_length=1, max_length=200)
+    force_refresh: bool = Field(default=False)
 
 
 class TranslateResponse(BaseModel):
@@ -141,6 +142,7 @@ async def translate_chapter(
             chapter_markdown,
             user_id=user_id,
             chapter_slug=slug,
+            force_refresh=body.force_refresh,
         )
     except openai.APIError:
         raise HTTPException(

@@ -18,7 +18,7 @@ from qdrant_client.models import Distance, VectorParams, PointStruct
 
 load_dotenv()
 
-client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
+client = genai.Client(api_key=os.environ["GOOGLE_API_KEY"])
 
 qdrant = QdrantClient(
     url=os.environ["QDRANT_URL"],
