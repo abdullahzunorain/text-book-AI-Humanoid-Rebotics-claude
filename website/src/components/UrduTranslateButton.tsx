@@ -92,7 +92,7 @@ export default function UrduTranslateButton({
       <button
         onClick={handleClick}
         disabled={loading}
-        className="button button--secondary button--sm"
+        className={isUrduActive ? 'action-btn action-btn--active' : 'action-btn'}
         style={{fontFamily: "'Noto Nastaliq Urdu', serif"}}
         type="button">
         {loading

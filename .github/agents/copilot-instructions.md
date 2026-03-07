@@ -10,6 +10,8 @@ Auto-generated from all feature plans. Last updated: 2026-03-04
 - Neon Serverless PostgreSQL (users, backgrounds, cache, chat_messages) + Qdrant Cloud (vectors) (004-physical-ai-textbook)
 - Python 3.13 + FastAPI, OpenAI Agents SDK (`openai-agents`), `openai` (transitive), `qdrant-client` (005-openai-agents-gemini)
 - Neon PostgreSQL (asyncpg), Qdrant Cloud (vectors) — both unchanged (005-openai-agents-gemini)
+- TypeScript 5.x, React 19, CSS3 + Docusaurus 3.9, Infima CSS framework (bundled), clsx — all already installed (006-ui-redesign)
+- N/A — frontend-only (006-ui-redesign)
 
 - Python 3.12+ (backend, uv), TypeScript/React 19 (frontend, Docusaurus 3.9.2) + FastAPI, google-genai (gemini-2.5-flash, gemini-embedding-001), qdrant-client, asyncpg, python-jose[cryptography], passlib[bcrypt], custom AuthProvider.tsx (frontend) (002-mvp2-complete-textbook)
 
@@ -40,9 +42,9 @@ cd website && npm run build
 - TypeScript: strict mode, React functional components with hooks
 
 ## Recent Changes
+- 006-ui-redesign: Added TypeScript 5.x, React 19, CSS3 + Docusaurus 3.9, Infima CSS framework (bundled), clsx — all already installed
 - 005-openai-agents-gemini: Added Python 3.13 + FastAPI, OpenAI Agents SDK (`openai-agents`), `openai` (transitive), `qdrant-client`
 - 004-physical-ai-textbook: Added Python 3.13 (backend), TypeScript/React 19 (frontend) + FastAPI, asyncpg, google-genai, qdrant-client, python-jose, bcrypt, groq, openai
-- 003-fix-auth-cookie-persistence: Added Python 3.13 (backend), TypeScript 5.x (frontend) + FastAPI 0.115+, python-jose (JWT HS256), bcrypt, asyncpg, Docusaurus 3.9.2, React 19
 
 
 <!-- MANUAL ADDITIONS START -->
