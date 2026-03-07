@@ -12,14 +12,16 @@
   z-index: 1000;
 }
 
+/* T015: 12px radius, subtle border */
 .auth-modal {
   background: var(--ifm-background-color);
-  border-radius: 8px;
+  border-radius: 12px;
   padding: 2rem;
   width: 90%;
   max-width: 400px;
   position: relative;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--ifm-color-emphasis-200);
 }
 
 .auth-modal-close {
@@ -73,11 +75,12 @@
   font-size: 0.875rem;
 }
 
+/* T015: 8px radius, indigo focus ring (replaces hardcoded green) */
 .auth-field input {
   width: 100%;
-  padding: 0.5rem 0.75rem;
+  padding: 0.625rem 0.875rem;
   border: 1px solid var(--ifm-color-emphasis-300);
-  border-radius: 4px;
+  border-radius: 8px;
   font-size: 1rem;
   background: var(--ifm-background-surface-color);
   color: var(--ifm-font-color-base);
@@ -86,7 +89,7 @@
 .auth-field input:focus {
   outline: none;
   border-color: var(--ifm-color-primary);
-  box-shadow: 0 0 0 2px rgba(46, 133, 85, 0.2);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
 }
 
 .auth-error {

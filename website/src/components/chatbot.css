@@ -2,7 +2,7 @@
    Chatbot Widget Styles
    ========================================================================== */
 
-/* Floating Toggle Button */
+/* Floating Toggle Button — T014: gradient + indigo glow shadow */
 .chatbot-toggle {
   position: fixed;
   bottom: 24px;
@@ -10,12 +10,12 @@
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: var(--ifm-color-primary);
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
   color: #fff;
   border: none;
   cursor: pointer;
   font-size: 24px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4);
   z-index: 1100;
   display: flex;
   align-items: center;
@@ -25,10 +25,10 @@
 
 .chatbot-toggle:hover {
   transform: scale(1.1);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 6px 24px rgba(99, 102, 241, 0.55);
 }
 
-/* Chat Panel */
+/* Chat Panel — T013: 16px radius, deeper indigo-tinted shadow */
 .chatbot-panel {
   position: fixed;
   bottom: 90px;
@@ -39,21 +39,21 @@
   max-height: calc(100vh - 120px);
   background: var(--ifm-background-color);
   border: 1px solid var(--ifm-color-emphasis-300);
-  border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(99, 102, 241, 0.12);
   z-index: 1099;
   display: flex;
   flex-direction: column;
   overflow: hidden;
 }
 
-/* Header */
+/* Header — T014: gradient background */
 .chatbot-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 12px 16px;
-  background: var(--ifm-color-primary);
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
   color: #fff;
   font-weight: 600;
   flex-shrink: 0;
@@ -111,8 +111,9 @@
   white-space: pre-wrap;
 }
 
+/* T014: gradient user bubble */
 .chatbot-message-user .chatbot-message-content {
-  background: var(--ifm-color-primary);
+  background: linear-gradient(135deg, #6366f1, #7c3aed);
   color: #fff;
   border-bottom-right-radius: 4px;
 }
@@ -191,11 +192,12 @@
   opacity: 0.6;
 }
 
+/* T014: gradient send button */
 .chatbot-send {
   width: 40px;
   height: 40px;
-  border-radius: 8px;
-  background: var(--ifm-color-primary);
+  border-radius: 10px;
+  background: linear-gradient(135deg, #6366f1, #7c3aed);
   color: #fff;
   border: none;
   cursor: pointer;

@@ -4,6 +4,14 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: 'Physical AI & Humanoid Robotics Textbook',
+
+  stylesheets: [
+    {
+      href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap',
+      type: 'text/css',
+      crossorigin: 'anonymous',
+    },
+  ],
   tagline: 'Learn ROS 2, sensor systems, and robot modeling — with an AI study companion',
   favicon: 'img/favicon.ico',
 

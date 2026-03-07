@@ -84,7 +84,7 @@ export default function PersonalizeButton({
       <button
         onClick={handleClick}
         disabled={loading}
-        className="button button--primary button--sm"
+        className={isPersonalizedActive ? 'action-btn action-btn--active' : 'action-btn'}
         type="button"
         title="Adapt this chapter to your learning profile">
         {loading

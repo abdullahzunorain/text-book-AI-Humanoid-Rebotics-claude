@@ -12,13 +12,13 @@ function HomepageHeader() {
   return (
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className="container">
-        <Heading as="h1" className="hero__title">
+        <Heading as="h1" className={clsx('hero__title', styles.heroTitle)}>
           {siteConfig.title}
         </Heading>
-        <p className="hero__subtitle">{siteConfig.tagline}</p>
+        <p className={styles.heroSubtitle}>{siteConfig.tagline}</p>
         <div className={styles.buttons}>
           <Link
-            className="button button--secondary button--lg"
+            className={styles.heroCta}
             to="/docs/intro">
             Start Reading →
           </Link>
@@ -30,12 +30,13 @@ function HomepageHeader() {
 
 function Features() {
   return (
-    <section style={{padding: '2rem 0'}}>
+    <section style={{padding: '3rem 0'}}>
       <div className="container">
-        <div className="row">
+        <div className="row" style={{gap: '0', rowGap: '1.5rem'}}>
           <div className="col col--4">
-            <div className="text--center padding-horiz--md">
-              <Heading as="h3">📚 Structured Learning</Heading>
+            <div className={clsx('text--center', styles.featureCard)}>
+              <span className={styles.featureIcon}>📚</span>
+              <Heading as="h3">Structured Learning</Heading>
               <p>
                 Comprehensive textbook covering Physical AI fundamentals and
                 ROS 2 — from architecture to URDF robot models.
@@ -43,8 +44,9 @@ function Features() {
             </div>
           </div>
           <div className="col col--4">
-            <div className="text--center padding-horiz--md">
-              <Heading as="h3">🤖 AI Study Companion</Heading>
+            <div className={clsx('text--center', styles.featureCard)}>
+              <span className={styles.featureIcon}>🤖</span>
+              <Heading as="h3">AI Study Companion</Heading>
               <p>
                 An embedded chatbot on every page to answer your questions about
                 the content — powered by RAG and Gemini.
@@ -52,8 +54,9 @@ function Features() {
             </div>
           </div>
           <div className="col col--4">
-            <div className="text--center padding-horiz--md">
-              <Heading as="h3">🖱️ Highlight & Ask</Heading>
+            <div className={clsx('text--center', styles.featureCard)}>
+              <span className={styles.featureIcon}>🖱️</span>
+              <Heading as="h3">Highlight &amp; Ask</Heading>
               <p>
                 Select any text in the textbook and ask the AI to explain it.
                 Context-aware answers about exactly what you're reading.

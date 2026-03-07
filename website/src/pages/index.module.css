@@ -3,16 +3,25 @@
  * and scoped locally.
  */
 
+/* ==========================================================================
+   T005 — Hero Banner: dark indigo gradient
+   ========================================================================== */
+
 .heroBanner {
-  padding: 4rem 0;
+  padding: 5rem 0;
   text-align: center;
   position: relative;
   overflow: hidden;
+  min-height: 480px;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 40%, #312e81 100%) !important;
 }
 
 @media screen and (max-width: 996px) {
   .heroBanner {
-    padding: 2rem;
+    padding: 3rem 1.5rem;
+    min-height: 380px;
   }
 }
 
@@ -21,3 +30,95 @@
   align-items: center;
   justify-content: center;
 }
+
+/* ==========================================================================
+   T006 — Hero Title: animated gradient text
+   ========================================================================== */
+
+.heroTitle {
+  background: linear-gradient(90deg, #c7d2fe 0%, #818cf8 50%, #a5b4fc 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: gradientShift 4s ease infinite;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+@keyframes gradientShift {
+  0%   { background-position: 0% center; }
+  50%  { background-position: 100% center; }
+  100% { background-position: 0% center; }
+}
+
+/* ==========================================================================
+   T007 — Hero Subtitle & CTA button
+   ========================================================================== */
+
+.heroSubtitle {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 1.2rem;
+  max-width: 580px;
+  margin: 0 auto 2rem;
+  line-height: 1.6;
+}
+
+.heroCta {
+  display: inline-block;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #fff !important;
+  border: none;
+  border-radius: 50px;
+  padding: 0.875rem 2.25rem;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none !important;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4);
+}
+
+.heroCta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.5);
+  color: #fff !important;
+  text-decoration: none !important;
+}
+
+/* ==========================================================================
+   T008 — Feature Cards: elevation + hover lift
+   ========================================================================== */
+
+.featureCard {
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 12px;
+  padding: 1.75rem 1.5rem;
+  background: var(--ifm-background-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  height: 100%;
+}
+
+.featureCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.15);
+}
+
+[data-theme='dark'] .featureCard {
+  border-color: var(--ifm-color-emphasis-300);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme='dark'] .featureCard:hover {
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.25);
+}
+
+.featureIcon {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: 1rem;
+  line-height: 1;
+}
+
