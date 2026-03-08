@@ -1,4 +1,5 @@
 import React, {useState, useCallback} from 'react';
+import {createPortal} from 'react-dom';
 
 interface BackgroundQuestionnaireProps {
   isOpen: boolean;
@@ -67,7 +68,7 @@ export default function BackgroundQuestionnaire({
 
   if (!isOpen) return null;
 
-  return (
+  return createPortal(
     <div className="questionnaire-overlay">
       <form className="questionnaire-form" onSubmit={handleSubmit}>
         <h2>Tell us about yourself</h2>
@@ -144,6 +145,7 @@ export default function BackgroundQuestionnaire({
           {loading ? 'Saving...' : 'Save & Continue'}
         </button>
       </form>
-    </div>
+    </div>,
+    document.body,
   );
 }

@@ -28,24 +28,7 @@
   box-shadow: 0 6px 24px rgba(99, 102, 241, 0.55);
 }
 
-/* Chat Panel — T013: 16px radius, deeper indigo-tinted shadow */
-.chatbot-panel {
-  position: fixed;
-  bottom: 90px;
-  right: 24px;
-  width: 380px;
-  max-width: calc(100vw - 48px);
-  height: 520px;
-  max-height: calc(100vh - 120px);
-  background: var(--ifm-background-color);
-  border: 1px solid var(--ifm-color-emphasis-300);
-  border-radius: 16px;
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(99, 102, 241, 0.12);
-  z-index: 1099;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
+/* Chat Panel — T013: Enhanced with premium entrance animation (see above) */
 
 /* Header — T014: gradient background */
 .chatbot-header {
@@ -118,11 +101,7 @@
   border-bottom-right-radius: 4px;
 }
 
-.chatbot-message-bot .chatbot-message-content {
-  background: var(--ifm-color-emphasis-100);
-  color: var(--ifm-font-color-base);
-  border-bottom-left-radius: 4px;
-}
+/* Bot message styling — enhanced with accent border (see above) */
 
 /* Sources */
 .chatbot-sources {
@@ -133,12 +112,7 @@
   opacity: 0.8;
 }
 
-/* Loading dots */
-.chatbot-loading {
-  display: flex;
-  gap: 4px;
-  padding: 12px 16px;
-}
+/* Loading dots — enhanced with accent border (see above) */
 
 .chatbot-dot {
   width: 8px;
@@ -172,27 +146,102 @@
   flex-shrink: 0;
 }
 
+/* Input styling — enhanced with premium depth (see above) */
+
+/* T014: gradient send button */
+/* T005 — Chat Surface Enhancements (Premium UI v2) */
+
+/* T058: Panel entrance animation (slide-up + fade-in) */
+@keyframes chatPanelSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.chatbot-panel {
+  position: fixed;
+  bottom: 90px;
+  right: 24px;
+  width: 380px;
+  max-width: calc(100vw - 48px);
+  height: 520px;
+  max-height: calc(100vh - 120px);
+  background: var(--ifm-background-color);
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 16px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(99, 102, 241, 0.12);
+  z-index: 1099;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: chatPanelSlideUp 0.3s cubic-bezier(0, 0, 0.2, 1) both;
+}
+
+/* T059: AI bubble accent border */
+.chatbot-message-bot .chatbot-message-content {
+  background: var(--ifm-color-emphasis-100);
+  color: var(--ifm-font-color-base);
+  border-bottom-left-radius: 4px;
+  border-left: 3px solid var(--ifm-color-primary);
+}
+
+/* T059: Typing indicator as bouncing dots */
+.chatbot-loading {
+  display: flex;
+  gap: 4px;
+  padding: 12px 16px;
+  border-left: 3px solid var(--ifm-color-primary);
+}
+
+/* T060: Premium chat input styling */
 .chatbot-input {
   flex: 1;
-  padding: 10px 12px;
+  padding: 12px 16px;
   border: 1px solid var(--ifm-color-emphasis-300);
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 14px;
   background: var(--ifm-background-color);
   color: var(--ifm-font-color-base);
   outline: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
 .chatbot-input:focus {
   border-color: var(--ifm-color-primary);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06), 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+/* T028: Dark-mode chat surface parity */
+[data-theme='dark'] .chatbot-panel {
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(129, 140, 248, 0.15);
+}
+
+[data-theme='dark'] .chatbot-message-bot .chatbot-message-content {
+  background: var(--ifm-color-emphasis-100);
+  border-left-color: var(--ifm-color-primary-light);
+}
+
+/* T057: Powered by Gemini badge */
+.chatbot-gemini-badge {
+  text-align: center;
+  padding: 6px 12px;
+  font-size: 0.7rem;
+  color: var(--ifm-font-color-secondary);
+  opacity: 0.7;
+  border-top: 1px solid var(--ifm-color-emphasis-200);
+  flex-shrink: 0;
 }
 
 .chatbot-input:disabled {
   opacity: 0.6;
 }
 
-/* T014: gradient send button */
 .chatbot-send {
   width: 40px;
   height: 40px;

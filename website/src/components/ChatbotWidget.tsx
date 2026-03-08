@@ -267,6 +267,11 @@ export default function ChatbotWidget(): React.JSX.Element {
               ➤
             </button>
           </form>
+          
+          {/* T057: Powered by Gemini badge */}
+          <div className="chatbot-gemini-badge">
+            ✨ Powered by Gemini
+          </div>
         </div>
       )}
     </>

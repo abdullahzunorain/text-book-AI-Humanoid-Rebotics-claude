@@ -4,23 +4,34 @@
 
 .auth-modal-overlay {
   position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 99999;
+  padding: 1rem;
+  overflow-y: auto;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
-/* T015: 12px radius, subtle border */
+/* Facebook-style centered modal card */
 .auth-modal {
   background: var(--ifm-background-color);
   border-radius: 12px;
   padding: 2rem;
   width: 90%;
-  max-width: 400px;
+  max-width: 420px;
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
   position: relative;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.15);
   border: 1px solid var(--ifm-color-emphasis-200);
 }
 
@@ -103,12 +114,19 @@
 /* Questionnaire styles */
 .questionnaire-overlay {
   position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1001;
+  z-index: 100000;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
 .questionnaire-form {
@@ -151,4 +169,153 @@
 .questionnaire-field textarea {
   resize: vertical;
   min-height: 60px;
+}
+
+/* ==========================================================================
+   T006 — Auth Modal Premium Enhancements (Premium UI v2)
+   ========================================================================== */
+
+/* T064: Modal entrance animation (fade + scale) */
+@keyframes authModalEntrance {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.auth-modal-overlay {
+  animation: ui-fade-in 0.2s ease both;
+}
+
+.auth-modal {
+  animation: authModalEntrance 0.25s cubic-bezier(0, 0, 0.2, 1) both;
+}
+
+/* T064: Password field with toggle */
+.auth-field {
+  position: relative;
+}
+
+.auth-password-toggle {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(25%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  font-size: 1.125rem;
+  color: var(--ifm-font-color-secondary);
+  line-height: 1;
+  opacity: 0.6;
+  transition: opacity 0.15s;
+}
+
+.auth-password-toggle:hover {
+  opacity: 1;
+}
+
+/* T065: Full-width gradient submit button */
+.auth-submit-btn {
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #fff !important;
+  border: none;
+  border-radius: var(--ui-radius-sm, 8px);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-submit-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
+}
+
+.auth-submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* T065: Loading spinner state */
+.auth-submit-btn.is-loading {
+  color: transparent !important;
+}
+
+.auth-submit-btn.is-loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin: -0.625rem 0 0 -0.625rem;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: authSpinner 0.6s linear infinite;
+}
+
+@keyframes authSpinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* OAuth placeholder buttons */
+.auth-oauth-section {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.auth-oauth-divider {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--ifm-font-color-secondary);
+  margin-bottom: 1rem;
+}
+
+.auth-oauth-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.auth-oauth-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.625rem 1rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: var(--ui-radius-sm, 8px);
+  background: var(--ifm-background-surface-color, #fff);
+  color: var(--ifm-font-color-base);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.auth-oauth-btn:hover {
+  background: rgba(99, 102, 241, 0.04);
+  border-color: var(--ifm-color-primary-light);
+}
+
+.auth-oauth-btn svg {
+  width: 18px;
+  height: 18px;
 }
