@@ -3,9 +3,11 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useState,
   type ReactNode,
 } from 'react';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 interface User {
   user_id: number;
@@ -26,13 +28,12 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-const API_URL =
-  (typeof window !== 'undefined' &&
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (window as any).__DOCUSAURUS_CUSTOM_FIELDS?.apiUrl) ||
-  'http://localhost:8000';
-
 export function AuthProvider({children}: {children: ReactNode}): React.JSX.Element {
+  const {siteConfig} = useDocusaurusContext();
+  const API_URL = useMemo(
+    () => (siteConfig.customFields?.apiUrl as string) || 'http://localhost:8000',
+    [siteConfig.customFields?.apiUrl],
+  );
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -52,7 +53,7 @@ export function AuthProvider({children}: {children: ReactNode}): React.JSX.Eleme
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [API_URL]);
 
   useEffect(() => {
     checkAuth();
@@ -74,7 +75,7 @@ export function AuthProvider({children}: {children: ReactNode}): React.JSX.Eleme
       setUser(data);
       return data;
     },
-    [],
+    [API_URL],
   );
 
   const signin = useCallback(
@@ -93,7 +94,7 @@ export function AuthProvider({children}: {children: ReactNode}): React.JSX.Eleme
       setUser(data);
       return data;
     },
-    [],
+    [API_URL],
   );
 
   const signout = useCallback(async () => {
@@ -102,7 +103,7 @@ export function AuthProvider({children}: {children: ReactNode}): React.JSX.Eleme
       credentials: 'include',
     });
     setUser(null);
-  }, []);
+  }, [API_URL]);
 
   return (
     <AuthContext.Provider
