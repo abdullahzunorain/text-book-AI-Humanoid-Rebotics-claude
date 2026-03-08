@@ -120,8 +120,21 @@ const config: Config = {
             },
           ],
         },
+        {
+          title: 'Connect',
+          items: [
+            {
+              label: '🔗 GitHub',
+              href: 'https://github.com/abdullahzunorain',
+            },
+            {
+              label: '💼 LinkedIn',
+              href: 'https://linkedin.com/in/abdullahzunorain',
+            },
+          ],
+        },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Physical AI Textbook. Built with Docusaurus.`,
+      copyright: `Built with ❤️ for the Physical AI community · © ${new Date().getFullYear()} Physical AI Textbook`,
     },
     prism: {
       theme: prismThemes.github,

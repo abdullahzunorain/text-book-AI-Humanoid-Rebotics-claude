@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useEffect} from 'react';
+import React, {useState, useCallback, useEffect, useRef} from 'react';
 import {useAuth} from './AuthProvider';
 import AuthModal from './AuthModal';
 import BackgroundQuestionnaire from './BackgroundQuestionnaire';
@@ -18,6 +18,7 @@ export default function AuthButton(): React.JSX.Element {
   const {user, isAuthenticated, loading, signout, checkAuth} = useAuth();
   const [showModal, setShowModal] = useState(false);
   const [showQuestionnaire, setShowQuestionnaire] = useState(false);
+  const signInButtonRef = useRef<HTMLButtonElement>(null);
 
   // Auto-show questionnaire when user is signed in but has no background profile.
   // Covers both the signup flow (new user) and signin for users who never completed
@@ -50,14 +51,14 @@ export default function AuthButton(): React.JSX.Element {
   }, [checkAuth]);
 
   if (loading) {
-    return <span className="navbar__item" style={{opacity: 0.5}}>...</span>;
+    return <span style={{opacity: 0.5}}>...</span>;
   }
 
   return (
     <>
       {/* Auth button — Sign In when logged out, email + Sign Out when logged in */}
       {isAuthenticated && user ? (
-        <div className="navbar__item" style={{display: 'flex', alignItems: 'center', gap: '0.5rem'}}>
+        <div style={{display: 'flex', alignItems: 'center', gap: '0.5rem'}}>
           <span style={{fontSize: '0.875rem', opacity: 0.8}}>{user.email}</span>
           <button
             className="button button--secondary button--sm"
@@ -67,8 +68,10 @@ export default function AuthButton(): React.JSX.Element {
           </button>
         </div>
       ) : (
+        /* WARNING: Do NOT add 'navbar__item' class — Docusaurus hides it at <996px. See spec 009. */
         <button
-          className="navbar__item button button--primary button--sm"
+          ref={signInButtonRef}
+          className="button button--primary button--sm"
           onClick={() => setShowModal(true)}
           type="button">
           Sign In
@@ -81,6 +84,7 @@ export default function AuthButton(): React.JSX.Element {
         onClose={() => setShowModal(false)}
         onSignupSuccess={handleSignupSuccess}
         onSigninSuccess={handleSigninSuccess}
+        triggerRef={signInButtonRef}
       />
       <BackgroundQuestionnaire
         isOpen={showQuestionnaire}

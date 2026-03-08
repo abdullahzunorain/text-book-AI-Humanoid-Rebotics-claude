@@ -66,3 +66,53 @@
 [data-theme='dark'] .urdu-content pre {
   background-color: var(--ifm-pre-background);
 }
+
+/* ==========================================================================
+   T011 — RTL Logical-Property Foundation (Premium UI v2)
+   ========================================================================== */
+
+/* Logical properties foundation for RTL support */
+.urdu-content .ui-card,
+.urdu-content .ui-section {
+  /* Use logical properties instead of left/right */
+  padding-inline-start: var(--ui-space-lg);
+  padding-inline-end: var(--ui-space-lg);
+  margin-inline-start: auto;
+  margin-inline-end: auto;
+}
+
+/* Border directions */
+.urdu-content .ui-border-start {
+  border-inline-start: 2px solid var(--ui-border-accent);
+}
+
+.urdu-content .ui-border-end {
+  border-inline-end: 2px solid var(--ui-border-accent);
+}
+
+/* Text alignment */
+.urdu-content .ui-text-start {
+  text-align: start;
+}
+
+.urdu-content .ui-text-end {
+  text-align: end;
+}
+
+/* Flexbox direction-aware */
+.urdu-content .ui-flex-row {
+  flex-direction: row;
+}
+
+[dir="rtl"] .ui-flex-row {
+  flex-direction: row-reverse;
+}
+
+/* Chat and modal RTL positioning helpers */
+.urdu-content .ui-chat-bubble-start {
+  align-self: flex-start;
+}
+
+.urdu-content .ui-chat-bubble-end {
+  align-self: flex-end;
+}

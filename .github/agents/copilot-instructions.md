@@ -12,6 +12,11 @@ Auto-generated from all feature plans. Last updated: 2026-03-04
 - Neon PostgreSQL (asyncpg), Qdrant Cloud (vectors) — both unchanged (005-openai-agents-gemini)
 - TypeScript 5.x, React 19, CSS3 + Docusaurus 3.9, Infima CSS framework (bundled), clsx — all already installed (006-ui-redesign)
 - N/A — frontend-only (006-ui-redesign)
+- TypeScript (React 19 JSX), CSS (global + CSS modules), Docusaurus 3.9 + `@docusaurus/core` classic preset, Infima theme tokens, React runtime, existing local components only (no new packages) (007-ui-v2-premium)
+- N/A (no data model or persistence changes for this feature) (007-ui-v2-premium)
+- CSS3 (within Docusaurus 3.9 / React 19 project) + Docusaurus CSS custom styles (`website/src/css/auth-modal.css`) (008-fix-auth-modal-overflow)
+- TypeScript 5.6, React 19, Node.js 18+ + Docusaurus 3.9.2, Playwright (new — `@playwright/test`), React 19 (009-playwright-e2e-testing)
+- N/A (frontend-only changes + E2E tests) (009-playwright-e2e-testing)
 
 - Python 3.12+ (backend, uv), TypeScript/React 19 (frontend, Docusaurus 3.9.2) + FastAPI, google-genai (gemini-2.5-flash, gemini-embedding-001), qdrant-client, asyncpg, python-jose[cryptography], passlib[bcrypt], custom AuthProvider.tsx (frontend) (002-mvp2-complete-textbook)
 
@@ -42,9 +47,9 @@ cd website && npm run build
 - TypeScript: strict mode, React functional components with hooks
 
 ## Recent Changes
-- 006-ui-redesign: Added TypeScript 5.x, React 19, CSS3 + Docusaurus 3.9, Infima CSS framework (bundled), clsx — all already installed
-- 005-openai-agents-gemini: Added Python 3.13 + FastAPI, OpenAI Agents SDK (`openai-agents`), `openai` (transitive), `qdrant-client`
-- 004-physical-ai-textbook: Added Python 3.13 (backend), TypeScript/React 19 (frontend) + FastAPI, asyncpg, google-genai, qdrant-client, python-jose, bcrypt, groq, openai
+- 009-playwright-e2e-testing: Added TypeScript 5.6, React 19, Node.js 18+ + Docusaurus 3.9.2, Playwright (new — `@playwright/test`), React 19
+- 008-fix-auth-modal-overflow: Added CSS3 (within Docusaurus 3.9 / React 19 project) + Docusaurus CSS custom styles (`website/src/css/auth-modal.css`)
+- 007-ui-v2-premium: Added TypeScript (React 19 JSX), CSS (global + CSS modules), Docusaurus 3.9 + `@docusaurus/core` classic preset, Infima theme tokens, React runtime, existing local components only (no new packages)
 
 
 <!-- MANUAL ADDITIONS START -->

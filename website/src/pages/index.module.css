@@ -4,7 +4,7 @@
  */
 
 /* ==========================================================================
-   T005 — Hero Banner: dark indigo gradient
+   Hero Banner (T014-T018)
    ========================================================================== */
 
 .heroBanner {
@@ -16,6 +16,12 @@
   display: flex;
   align-items: center;
   background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 40%, #312e81 100%) !important;
+  z-index: 1;
+}
+
+.heroContent {
+  position: relative;
+  z-index: 3;
 }
 
 @media screen and (max-width: 996px) {
@@ -25,16 +31,92 @@
   }
 }
 
+/* T015: Mesh/dot-grid overlay */
+.heroMeshOverlay {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle at 1px 1px, rgba(99, 102, 241, 0.15) 1px, transparent 0);
+  background-size: 48px 48px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* T015: Floating glow orb */
+.heroGlowOrb {
+  position: absolute;
+  top: -20%;
+  right: 10%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.4) 0%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(80px);
+  animation: heroOrbFloat 8s ease-in-out infinite;
+  z-index: 2;
+  pointer-events: none;
+}
+
+@keyframes heroOrbFloat {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -40px) scale(1.1); }
+  66% { transform: translate(-30px, 40px) scale(0.9); }
+}
+
+/* T018: Reduced motion for orb */
+@media (prefers-reduced-motion: reduce) {
+  .heroGlowOrb {
+    animation: none;
+    opacity: 0.3;
+  }
+}
+
+/* T015: Shimmer badge */
+.heroShimmerBadge {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  padding: 0.5rem 1.25rem;
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(129, 140, 248, 0.3);
+  border-radius: 50px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #a5b4fc;
+  position: relative;
+  overflow: hidden;
+}
+
+.heroShimmerBadge::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* T018: Reduced motion for shimmer */
+@media (prefers-reduced-motion: reduce) {
+  .heroShimmerBadge::before {
+    animation: none;
+  }
+}
+
 .buttons {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
-/* ==========================================================================
-   T006 — Hero Title: animated gradient text
-   ========================================================================== */
-
+/* T016: Animated gradient title with clamp */
 .heroTitle {
   background: linear-gradient(90deg, #c7d2fe 0%, #818cf8 50%, #a5b4fc 100%);
   background-size: 200% auto;
@@ -43,7 +125,8 @@
   -webkit-text-fill-color: transparent;
   color: transparent;
   animation: gradientShift 4s ease infinite;
-  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  font-weight: 800;
   line-height: 1.2;
   margin-bottom: 1rem;
 }
@@ -54,9 +137,13 @@
   100% { background-position: 0% center; }
 }
 
-/* ==========================================================================
-   T007 — Hero Subtitle & CTA button
-   ========================================================================== */
+/* T018: Reduced motion for gradient */
+@media (prefers-reduced-motion: reduce) {
+  .heroTitle {
+    animation: none;
+    background-position: 0% center;
+  }
+}
 
 .heroSubtitle {
   color: rgba(255, 255, 255, 0.75);
@@ -66,6 +153,7 @@
   line-height: 1.6;
 }
 
+/* T017: Primary CTA */
 .heroCta {
   display: inline-block;
   background: linear-gradient(135deg, #6366f1, #8b5cf6);
@@ -76,8 +164,9 @@
   font-size: 1rem;
   font-weight: 600;
   text-decoration: none !important;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
   box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4);
+  min-height: 44px;
 }
 
 .heroCta:hover {
@@ -87,18 +176,83 @@
   text-decoration: none !important;
 }
 
+/* T017: Ghost CTA */
+.heroGhostCta {
+  display: inline-block;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.85) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50px;
+  padding: 0.875rem 2.25rem;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none !important;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  min-height: 44px;
+}
+
+.heroGhostCta:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.5);
+  color: #fff !important;
+  text-decoration: none !important;
+}
+
 /* ==========================================================================
-   T008 — Feature Cards: elevation + hover lift
+   Features Section (T020-T023)
    ========================================================================== */
 
+.featuresSection {
+  padding: var(--ui-space-2xl, 3rem) 0;
+}
+
+.sectionHeader {
+  text-align: center;
+  margin-bottom: var(--ui-space-xl, 2rem);
+}
+
+.featuresSectionHeading {
+  display: inline-block;
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+.featuresSectionHeading::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 25%;
+  width: 50%;
+  height: 3px;
+  background: var(--ui-gradient-indigo, linear-gradient(135deg, #6366f1, #8b5cf6));
+  border-radius: 2px;
+}
+
+/* T023: 3-column desktop, 1-column mobile grid */
+.featuresGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--ui-space-lg, 1.5rem);
+}
+
+@media screen and (max-width: 768px) {
+  .featuresGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* T022: Cards with gradient top border */
 .featureCard {
-  border: 1px solid var(--ifm-color-emphasis-200);
-  border-radius: 12px;
+  border: 1px solid var(--ui-border-subtle, var(--ifm-color-emphasis-200));
+  border-top: 2px solid transparent;
+  border-image: linear-gradient(90deg, #6366f1, #8b5cf6) 1;
+  border-image-slice: 1 0 0 0;
+  border-radius: 0 0 var(--ui-radius-md, 12px) var(--ui-radius-md, 12px);
   padding: 1.75rem 1.5rem;
   background: var(--ifm-background-color);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--ui-shadow-sm, 0 2px 8px rgba(0, 0, 0, 0.05));
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  height: 100%;
+  text-align: center;
 }
 
 .featureCard:hover {
@@ -108,11 +262,11 @@
 
 [data-theme='dark'] .featureCard {
   border-color: var(--ifm-color-emphasis-300);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--ui-shadow-sm);
 }
 
 [data-theme='dark'] .featureCard:hover {
-  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.25);
+  box-shadow: var(--ui-shadow-glow-hover);
 }
 
 .featureIcon {
@@ -120,5 +274,194 @@
   display: block;
   margin-bottom: 1rem;
   line-height: 1;
+}
+
+/* ==========================================================================
+   How It Works Section (T042-T045)
+   ========================================================================== */
+
+.workflowSection {
+  padding: var(--ui-space-2xl, 3rem) 0;
+  background: var(--ui-surface-tint, #f8f9fa);
+}
+
+[data-theme='dark'] .workflowSection {
+  background: var(--ui-surface-elevated, #24242a);
+}
+
+.workflowSteps {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0;
+}
+
+.workflowStep {
+  flex: 1;
+  max-width: 280px;
+  text-align: center;
+  padding: 0 var(--ui-space-md, 1rem);
+}
+
+.workflowStepNumber {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--ui-gradient-indigo, linear-gradient(135deg, #6366f1, #8b5cf6));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--ui-space-md, 1rem);
+  font-size: 1.5rem;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+/* T043: Dashed connector between steps */
+.workflowConnector {
+  width: 60px;
+  min-width: 40px;
+  border-top: 2px dashed var(--ifm-color-emphasis-300);
+  margin-top: 32px;
+  flex-shrink: 1;
+}
+
+/* T044: Scroll-triggered fade/reveal */
+.workflowSection {
+  animation: sectionFadeIn 0.6s ease-out both;
+}
+
+@keyframes sectionFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* T045: Mobile stacked workflow */
+@media screen and (max-width: 768px) {
+  .workflowSteps {
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .workflowStep {
+    max-width: 100%;
+  }
+
+  .workflowConnector {
+    width: 2px;
+    min-width: 2px;
+    height: 32px;
+    border-top: none;
+    border-left: 2px dashed var(--ifm-color-emphasis-300);
+    margin-top: 0;
+  }
+}
+
+/* T018: Reduced motion for section reveal */
+@media (prefers-reduced-motion: reduce) {
+  .workflowSection {
+    animation: none;
+  }
+}
+
+/* ==========================================================================
+   Stats Section (T047-T049)
+   ========================================================================== */
+
+.statsSection {
+  padding: var(--ui-space-2xl, 3rem) 0;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.04) 0%, rgba(139, 92, 246, 0.06) 100%);
+}
+
+[data-theme='dark'] .statsSection {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(139, 92, 246, 0.1) 100%);
+}
+
+.statsGrid {
+  display: flex;
+  justify-content: center;
+  gap: var(--ui-space-2xl, 3rem);
+  flex-wrap: wrap;
+}
+
+.statItem {
+  text-align: center;
+  min-width: 140px;
+}
+
+.statValue {
+  display: block;
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 800;
+  color: var(--ifm-color-primary);
+  line-height: 1.2;
+}
+
+.statLabel {
+  display: block;
+  font-size: 1rem;
+  color: var(--ifm-font-color-secondary);
+  margin-top: 0.25rem;
+}
+
+/* ==========================================================================
+   Mobile Responsiveness (T030)
+   ========================================================================== */
+
+@media screen and (max-width: 480px) {
+  .heroBanner {
+    padding: 2rem 1rem;
+    min-height: 320px;
+  }
+
+  .heroSubtitle {
+    font-size: 1rem;
+  }
+
+  .heroCta,
+  .heroGhostCta {
+    width: 100%;
+    text-align: center;
+    padding: 0.75rem 1.5rem;
+  }
+
+  .buttons {
+    flex-direction: column;
+  }
+
+  .statsGrid {
+    gap: var(--ui-space-lg, 1.5rem);
+  }
+}
+
+/* ==========================================================================
+   US9 T025 — Dark Mode Hero Star/Dot Pattern
+   ========================================================================== */
+
+[data-theme='dark'] .heroBanner {
+  background: linear-gradient(135deg, #0a0a12 0%, #0f0d2e 40%, #1e1b4b 100%) !important;
+}
+
+[data-theme='dark'] .heroMeshOverlay {
+  background-image: 
+    radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.12) 1px, transparent 0),
+    radial-gradient(circle at 25px 25px, rgba(129, 140, 248, 0.08) 0.5px, transparent 0);
+  background-size: 48px 48px, 72px 72px;
+}
+
+/* US9 T026 — Dark Mode Feature Card Glow */
+[data-theme='dark'] .featureCard {
+  box-shadow: var(--ui-shadow-glow, 0 0 1px rgba(129, 140, 248, 0.3));
+}
+
+[data-theme='dark'] .featureCard:hover {
+  box-shadow: var(--ui-shadow-glow-hover, 0 0 2px rgba(129, 140, 248, 0.4), 0 8px 24px rgba(99, 102, 241, 0.4));
 }
 
