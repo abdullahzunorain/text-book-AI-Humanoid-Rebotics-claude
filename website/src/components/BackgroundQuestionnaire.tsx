@@ -1,21 +1,21 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, useCallback, useMemo} from 'react';
 import {createPortal} from 'react-dom';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 interface BackgroundQuestionnaireProps {
   isOpen: boolean;
   onComplete: () => void;
 }
 
-const API_URL =
-  (typeof window !== 'undefined' &&
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (window as any).__DOCUSAURUS_CUSTOM_FIELDS?.apiUrl) ||
-  'http://localhost:8000';
-
 export default function BackgroundQuestionnaire({
   isOpen,
   onComplete,
 }: BackgroundQuestionnaireProps): React.JSX.Element | null {
+  const {siteConfig} = useDocusaurusContext();
+  const API_URL = useMemo(
+    () => (siteConfig.customFields?.apiUrl as string) || 'http://localhost:8000',
+    [siteConfig.customFields?.apiUrl],
+  );
   const [pythonLevel, setPythonLevel] = useState('beginner');
   const [roboticsExperience, setRoboticsExperience] = useState('none');
   const [mathLevel, setMathLevel] = useState('high_school');
@@ -63,6 +63,7 @@ export default function BackgroundQuestionnaire({
       hardwareAccess,
       learningGoal,
       onComplete,
+      API_URL,
     ],
   );
 

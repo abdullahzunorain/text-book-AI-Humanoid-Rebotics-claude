@@ -1,4 +1,5 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, useCallback, useMemo} from 'react';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import {useAuth} from '@site/src/components/AuthProvider';
 
 /**
@@ -15,12 +16,6 @@ interface UrduTranslateButtonProps {
   isUrduActive: boolean;
 }
 
-const API_URL =
-  (typeof window !== 'undefined' &&
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (window as any).__DOCUSAURUS_CUSTOM_FIELDS?.apiUrl) ||
-  'http://localhost:8000';
-
 /**
  * "اردو میں پڑھیں" toggle button — requires authentication.
  * Calls POST /api/translate with the current chapter slug.
@@ -31,6 +26,11 @@ export default function UrduTranslateButton({
   onShowEnglish,
   isUrduActive,
 }: UrduTranslateButtonProps): React.JSX.Element | null {
+  const {siteConfig} = useDocusaurusContext();
+  const API_URL = useMemo(
+    () => (siteConfig.customFields?.apiUrl as string) || 'http://localhost:8000',
+    [siteConfig.customFields?.apiUrl],
+  );
   const {isAuthenticated} = useAuth();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -68,7 +68,7 @@ export default function UrduTranslateButton({
     } finally {
       setLoading(false);
     }
-  }, [chapterSlug, onTranslated]);
+  }, [chapterSlug, onTranslated, API_URL]);
 
   const handleClick = useCallback(async () => {
     if (isUrduActive) {
