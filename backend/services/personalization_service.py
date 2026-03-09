@@ -83,7 +83,12 @@ def build_personalization_prompt(chapter_md: str, profile: dict[str, str | bool]
 # Public API
 # ---------------------------------------------------------------------------
 
-_DOCS_ROOT: pathlib.Path = pathlib.Path(__file__).resolve().parent.parent.parent / "website" / "docs"
+# Primary: backend/docs/ (works on Railway where backend/ is the container root)
+# Fallback: website/docs/ (works in local dev where repo root is the CWD)
+_BACKEND_DIR: pathlib.Path = pathlib.Path(__file__).resolve().parent.parent
+_DOCS_ROOT: pathlib.Path = _BACKEND_DIR / "docs"
+if not _DOCS_ROOT.is_dir():
+    _DOCS_ROOT = _BACKEND_DIR.parent / "website" / "docs"
 
 
 async def personalize_chapter(chapter_slug: str, user_id: int) -> dict[str, str]:

@@ -51,7 +51,12 @@ _ip_requests: dict[str, list[float]] = {}
 _SLUG_RE: re.Pattern[str] = re.compile(r"^[a-zA-Z0-9/_-]+$")
 
 # Resolve the docs directory relative to this file
-_DOCS_DIR: Path = Path(__file__).resolve().parent.parent.parent / "website" / "docs"
+# Primary: backend/docs/ (works on Railway where backend/ is the container root)
+# Fallback: website/docs/ (works in local dev where repo root is the CWD)
+_BACKEND_DIR: Path = Path(__file__).resolve().parent.parent
+_DOCS_DIR: Path = _BACKEND_DIR / "docs"
+if not _DOCS_DIR.is_dir():
+    _DOCS_DIR = _BACKEND_DIR.parent / "website" / "docs"
 
 
 def _check_rate_limit(client_ip: str) -> None:
