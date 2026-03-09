@@ -14,7 +14,7 @@ from pydantic import BaseModel, EmailStr, Field
 
 from auth_utils import create_token, decode_token, hash_password, verify_password
 from cookie_config import get_cookie_config
-from db import get_pool
+from db import ensure_pool
 from services.cache_service import invalidate_personalization
 
 router: APIRouter = APIRouter()
@@ -96,7 +96,7 @@ class BackgroundRequest(BaseModel):
 @router.post("/api/auth/signup", status_code=201)
 async def signup(body: SignupRequest, response: Response) -> dict[str, Any]:
     """Create a new user account."""
-    pool = get_pool()
+    pool = await ensure_pool()
 
     # Check if email is already taken
     existing = await pool.fetchrow(
@@ -127,7 +127,7 @@ async def signup(body: SignupRequest, response: Response) -> dict[str, Any]:
 @router.post("/api/auth/signin")
 async def signin(body: SigninRequest, response: Response) -> dict[str, Any]:
     """Authenticate an existing user."""
-    pool = get_pool()
+    pool = await ensure_pool()
 
     # Find user
     user = await pool.fetchrow(
@@ -172,7 +172,7 @@ async def me(request: Request) -> dict[str, Any]:
     token: str = request.cookies.get(_COOKIE_NAME, "")
     payload: dict = decode_token(token)
 
-    pool = get_pool()
+    pool = await ensure_pool()
     bg = await pool.fetchrow(
         "SELECT user_id FROM user_backgrounds WHERE user_id = $1", user_id
     )
@@ -191,7 +191,7 @@ async def save_background(
 ) -> dict[str, Any]:
     """Upsert user background (5 fields). Requires JWT cookie."""
     user_id: int = _get_user_id_from_cookie(request)
-    pool = get_pool()
+    pool = await ensure_pool()
 
     # UPSERT: insert or update on conflict
     row = await pool.fetchrow(

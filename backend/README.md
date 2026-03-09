@@ -22,9 +22,8 @@ pip install -r requirements.txt
 # Copy and fill environment variables
 cp .env.example .env
 
-# Run migrations
-psql "$DATABASE_URL" -f migrations/001_create_users.sql
-psql "$DATABASE_URL" -f migrations/002_add_cache_and_chat.sql
+# Run migrations (automatic on Railway deploy, manual for local)
+python migrate.py
 
 # Index textbook content into Qdrant
 python index_content.py
@@ -32,6 +31,21 @@ python index_content.py
 # Start development server
 uvicorn main:app --reload --port 8000
 ```
+
+## Railway Deployment
+
+The backend deploys to Railway via Nixpacks. Config-as-code lives in `railway.json`.
+
+**Required Railway Dashboard Settings (manual, one-time):**
+
+1. **`APP_ENV=production`** — Set in Railway service variables. Enables `Secure; SameSite=None` cookie attributes for cross-origin auth.
+2. **Remove `channel_binding=require`** — If present in the `DATABASE_URL` connection string, remove this parameter. Neon's serverless driver does not support channel binding via asyncpg.
+3. **`CORS_ORIGINS`** — Set to the production frontend URL (e.g., `https://abdullahzunorain.github.io`). Comma-separated if multiple origins.
+
+**Automatic on deploy:**
+- Migrations run via `python migrate.py` before the app starts
+- Healthcheck at `/health` with 120s timeout (handles cold starts after serverless sleep)
+- Watch patterns limit builds to `backend/**` changes only
 
 ## API Endpoints
 

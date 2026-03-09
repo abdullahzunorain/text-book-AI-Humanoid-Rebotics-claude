@@ -34,7 +34,7 @@ def _mock_pool() -> MagicMock:
 class TestSignup:
     """Tests for POST /api/auth/signup."""
 
-    @patch("routes.auth.get_pool")
+    @patch("routes.auth.ensure_pool", new_callable=AsyncMock)
     @patch.dict(os.environ, {"JWT_SECRET": "test-secret-key-for-unit-tests"})
     def test_signup_valid_returns_201(self, mock_get_pool: MagicMock) -> None:
         """POST /api/auth/signup with valid email/password → 201 + Set-Cookie."""
@@ -59,7 +59,7 @@ class TestSignup:
         assert data["has_background"] is False  # new user always has no background
         assert "token" in response.cookies or "set-cookie" in response.headers
 
-    @patch("routes.auth.get_pool")
+    @patch("routes.auth.ensure_pool", new_callable=AsyncMock)
     @patch.dict(os.environ, {"JWT_SECRET": "test-secret-key-for-unit-tests"})
     def test_signup_duplicate_email_returns_400(self, mock_get_pool: MagicMock) -> None:
         """POST /api/auth/signup with existing email → 400."""
@@ -88,7 +88,7 @@ class TestSignup:
 class TestSignin:
     """Tests for POST /api/auth/signin."""
 
-    @patch("routes.auth.get_pool")
+    @patch("routes.auth.ensure_pool", new_callable=AsyncMock)
     @patch.dict(os.environ, {"JWT_SECRET": "test-secret-key-for-unit-tests"})
     def test_signin_valid_returns_200(self, mock_get_pool: MagicMock) -> None:
         """POST /api/auth/signin with correct credentials → 200 + cookie."""
@@ -113,7 +113,7 @@ class TestSignin:
         assert data["email"] == "user@example.com"
         assert "has_background" in data
 
-    @patch("routes.auth.get_pool")
+    @patch("routes.auth.ensure_pool", new_callable=AsyncMock)
     @patch.dict(os.environ, {"JWT_SECRET": "test-secret-key-for-unit-tests"})
     def test_signin_wrong_password_returns_401(self, mock_get_pool: MagicMock) -> None:
         """POST /api/auth/signin with wrong password → 401."""
@@ -146,7 +146,7 @@ class TestSignout:
 class TestMe:
     """Tests for GET /api/auth/me."""
 
-    @patch("routes.auth.get_pool")
+    @patch("routes.auth.ensure_pool", new_callable=AsyncMock)
     @patch.dict(os.environ, {"JWT_SECRET": "test-secret-key-for-unit-tests"})
     def test_me_with_valid_cookie_returns_200(self, mock_get_pool: MagicMock) -> None:
         """GET /api/auth/me with valid cookie → 200 + user info."""
@@ -181,7 +181,7 @@ class TestMe:
 class TestSignupCookieAttrs:
     """US1: Signup must set cookie with dev attrs (no Secure, SameSite=Lax)."""
 
-    @patch("routes.auth.get_pool")
+    @patch("routes.auth.ensure_pool", new_callable=AsyncMock)
     @patch.dict(
         os.environ,
         {"JWT_SECRET": "test-secret-key-for-unit-tests", "APP_ENV": "development"},
@@ -273,7 +273,7 @@ class TestSignoutClearsCookieAttrs:
 class TestSigninCookieAttrs:
     """US2: Signin must set cookie with same dev attrs as signup."""
 
-    @patch("routes.auth.get_pool")
+    @patch("routes.auth.ensure_pool", new_callable=AsyncMock)
     @patch.dict(
         os.environ,
         {"JWT_SECRET": "test-secret-key-for-unit-tests", "APP_ENV": "development"},
@@ -318,7 +318,7 @@ class TestSigninCookieAttrs:
 class TestSessionExpired:
     """US3: Expired JWT must return detail='session_expired'."""
 
-    @patch("routes.auth.get_pool")
+    @patch("routes.auth.ensure_pool", new_callable=AsyncMock)
     @patch.dict(os.environ, {"JWT_SECRET": "test-secret-key-for-unit-tests"})
     def test_401_expired_returns_session_expired(self, mock_get_pool: MagicMock) -> None:
         """GET /api/auth/me with expired JWT → 401, detail='session_expired'."""

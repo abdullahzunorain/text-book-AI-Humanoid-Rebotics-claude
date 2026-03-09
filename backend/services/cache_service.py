@@ -14,7 +14,7 @@ from __future__ import annotations
 import json
 import logging
 
-from db import get_pool
+from db import ensure_pool
 
 logger = logging.getLogger(__name__)
 
@@ -34,7 +34,7 @@ async def get_cached(
     Returns:
         Cached content string, or None on cache miss.
     """
-    pool = get_pool()
+    pool = await ensure_pool()
     row = await pool.fetchrow(
         """
         SELECT content FROM content_cache
@@ -67,7 +67,7 @@ async def set_cached(
         content: Full AI-generated markdown content.
         metadata: Optional dict (provider used, generation time, etc.).
     """
-    pool = get_pool()
+    pool = await ensure_pool()
     meta_json = json.dumps(metadata or {})
     await pool.execute(
         """
@@ -96,7 +96,7 @@ async def invalidate_personalization(user_id: int) -> None:
     Args:
         user_id: The user whose personalization cache should be cleared.
     """
-    pool = get_pool()
+    pool = await ensure_pool()
     result = await pool.execute(
         """
         DELETE FROM content_cache

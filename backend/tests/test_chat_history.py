@@ -54,7 +54,7 @@ class TestSaveMessage:
     """Tests for save_message()."""
 
     @pytest.mark.asyncio
-    @patch("services.chat_history_service.get_pool")
+    @patch("services.chat_history_service.ensure_pool", new_callable=AsyncMock)
     async def test_save_message_returns_id(self, mock_get_pool):
         """save_message inserts and returns the new message ID."""
         pool = _mock_pool()
@@ -76,7 +76,7 @@ class TestSaveMessage:
         assert "RETURNING id" in sql
 
     @pytest.mark.asyncio
-    @patch("services.chat_history_service.get_pool")
+    @patch("services.chat_history_service.ensure_pool", new_callable=AsyncMock)
     async def test_save_message_with_selected_text(self, mock_get_pool):
         """save_message handles selected_text parameter."""
         pool = _mock_pool()
@@ -95,7 +95,7 @@ class TestSaveMessage:
         assert call_args[4] == "ROS 2 uses DDS"  # selected_text param
 
     @pytest.mark.asyncio
-    @patch("services.chat_history_service.get_pool")
+    @patch("services.chat_history_service.ensure_pool", new_callable=AsyncMock)
     async def test_save_message_sources_as_json(self, mock_get_pool):
         """Sources are serialized as JSONB."""
         pool = _mock_pool()
@@ -118,7 +118,7 @@ class TestGetHistory:
     """Tests for get_history()."""
 
     @pytest.mark.asyncio
-    @patch("services.chat_history_service.get_pool")
+    @patch("services.chat_history_service.ensure_pool", new_callable=AsyncMock)
     async def test_get_history_returns_messages(self, mock_get_pool):
         """get_history returns list of message dicts."""
         pool = _mock_pool()
@@ -135,7 +135,7 @@ class TestGetHistory:
         assert messages[1]["id"] == 1
 
     @pytest.mark.asyncio
-    @patch("services.chat_history_service.get_pool")
+    @patch("services.chat_history_service.ensure_pool", new_callable=AsyncMock)
     async def test_get_history_sql_orders_by_created_at_desc(self, mock_get_pool):
         """SQL query should ORDER BY created_at DESC."""
         pool = _mock_pool()
@@ -148,7 +148,7 @@ class TestGetHistory:
         assert "ORDER BY created_at DESC" in sql
 
     @pytest.mark.asyncio
-    @patch("services.chat_history_service.get_pool")
+    @patch("services.chat_history_service.ensure_pool", new_callable=AsyncMock)
     async def test_get_history_respects_limit_offset(self, mock_get_pool):
         """Pagination params are passed to SQL."""
         pool = _mock_pool()
@@ -162,7 +162,7 @@ class TestGetHistory:
         assert call_args[3] == 20  # offset
 
     @pytest.mark.asyncio
-    @patch("services.chat_history_service.get_pool")
+    @patch("services.chat_history_service.ensure_pool", new_callable=AsyncMock)
     async def test_get_history_clamps_limit_to_100(self, mock_get_pool):
         """Limit should be clamped to max 100."""
         pool = _mock_pool()
@@ -175,7 +175,7 @@ class TestGetHistory:
         assert call_args[2] == 100  # clamped
 
     @pytest.mark.asyncio
-    @patch("services.chat_history_service.get_pool")
+    @patch("services.chat_history_service.ensure_pool", new_callable=AsyncMock)
     async def test_get_history_empty_returns_empty_list(self, mock_get_pool):
         """No messages → empty list."""
         pool = _mock_pool()
@@ -186,7 +186,7 @@ class TestGetHistory:
         assert messages == []
 
     @pytest.mark.asyncio
-    @patch("services.chat_history_service.get_pool")
+    @patch("services.chat_history_service.ensure_pool", new_callable=AsyncMock)
     async def test_get_history_selected_text_nullable(self, mock_get_pool):
         """Messages with null selected_text are handled."""
         pool = _mock_pool()
@@ -199,7 +199,7 @@ class TestGetHistory:
         assert messages[0]["selected_text"] is None
 
     @pytest.mark.asyncio
-    @patch("services.chat_history_service.get_pool")
+    @patch("services.chat_history_service.ensure_pool", new_callable=AsyncMock)
     async def test_get_history_created_at_iso_format(self, mock_get_pool):
         """created_at should be converted to ISO format string."""
         pool = _mock_pool()
@@ -216,7 +216,7 @@ class TestGetTotalCount:
     """Tests for get_total_count()."""
 
     @pytest.mark.asyncio
-    @patch("services.chat_history_service.get_pool")
+    @patch("services.chat_history_service.ensure_pool", new_callable=AsyncMock)
     async def test_get_total_count(self, mock_get_pool):
         """get_total_count returns the total number of messages."""
         pool = _mock_pool()

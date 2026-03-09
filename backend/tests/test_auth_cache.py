@@ -41,7 +41,7 @@ class TestBackgroundCacheInvalidation:
     """Test that saving background invalidates personalization cache."""
 
     @patch("routes.auth.invalidate_personalization", new_callable=AsyncMock)
-    @patch("routes.auth.get_pool")
+    @patch("routes.auth.ensure_pool", new_callable=AsyncMock)
     @patch.dict(os.environ, _JWT_ENV)
     def test_save_background_invalidates_personalization(
         self,
@@ -64,7 +64,7 @@ class TestBackgroundCacheInvalidation:
         mock_invalidate.assert_called_once_with(1)
 
     @patch("routes.auth.invalidate_personalization", new_callable=AsyncMock, side_effect=Exception("DB error"))
-    @patch("routes.auth.get_pool")
+    @patch("routes.auth.ensure_pool", new_callable=AsyncMock)
     @patch.dict(os.environ, _JWT_ENV)
     def test_cache_invalidation_failure_does_not_break_response(
         self,

@@ -20,22 +20,12 @@ from routes.auth import router as auth_router  # noqa: E402
 from routes.chat import router as chat_router  # noqa: E402
 from routes.personalize import router as personalize_router  # noqa: E402
 from routes.translate import router as translate_router  # noqa: E402
-from db import close_pool, init_pool  # noqa: E402
+from db import close_pool  # noqa: E402
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
-    """Startup/shutdown: initialize and close the DB pool."""
-    dsn = os.getenv("DATABASE_URL", "")
-    if dsn:
-        try:
-            await init_pool(dsn)
-        except Exception as exc:
-            import logging
-            logging.getLogger(__name__).warning(
-                "Could not connect to Postgres — auth, history, and cache will be unavailable: %s",
-                exc,
-            )
+    """Startup/shutdown: close the DB pool on shutdown."""
     yield
     await close_pool()
 
@@ -56,7 +46,7 @@ app.add_middleware(
     allow_origins=origins,
     allow_credentials=True,
     allow_methods=["GET", "POST", "OPTIONS"],
-    allow_headers=["Content-Type"],
+    allow_headers=["Content-Type", "Authorization"],
     max_age=3600,
 )
 

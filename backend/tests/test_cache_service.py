@@ -32,7 +32,7 @@ class TestCacheServiceGetCached:
     """Tests for get_cached()."""
 
     @pytest.mark.asyncio
-    @patch("services.cache_service.get_pool")
+    @patch("services.cache_service.ensure_pool", new_callable=AsyncMock)
     async def test_cache_miss_returns_none(self, mock_get_pool):
         """Cache miss → returns None."""
         pool = _mock_pool()
@@ -44,7 +44,7 @@ class TestCacheServiceGetCached:
         pool.fetchrow.assert_called_once()
 
     @pytest.mark.asyncio
-    @patch("services.cache_service.get_pool")
+    @patch("services.cache_service.ensure_pool", new_callable=AsyncMock)
     async def test_cache_hit_returns_content(self, mock_get_pool):
         """Cache hit → returns content string."""
         pool = _mock_pool()
@@ -59,7 +59,7 @@ class TestCacheServiceSetCached:
     """Tests for set_cached()."""
 
     @pytest.mark.asyncio
-    @patch("services.cache_service.get_pool")
+    @patch("services.cache_service.ensure_pool", new_callable=AsyncMock)
     async def test_set_cached_executes_upsert(self, mock_get_pool):
         """set_cached calls UPSERT on content_cache."""
         pool = _mock_pool()
@@ -80,7 +80,7 @@ class TestCacheServiceSetCached:
         assert "ON CONFLICT" in sql
 
     @pytest.mark.asyncio
-    @patch("services.cache_service.get_pool")
+    @patch("services.cache_service.ensure_pool", new_callable=AsyncMock)
     async def test_set_cached_overwrites_existing(self, mock_get_pool):
         """UPSERT semantics: second set overwrites first."""
         pool = _mock_pool()
@@ -94,7 +94,7 @@ class TestCacheServiceSetCached:
         assert pool.execute.call_count == 2
 
     @pytest.mark.asyncio
-    @patch("services.cache_service.get_pool")
+    @patch("services.cache_service.ensure_pool", new_callable=AsyncMock)
     async def test_set_cached_default_metadata(self, mock_get_pool):
         """No metadata → defaults to empty JSON object."""
         pool = _mock_pool()
@@ -111,7 +111,7 @@ class TestCacheServiceInvalidation:
     """Tests for invalidate_personalization()."""
 
     @pytest.mark.asyncio
-    @patch("services.cache_service.get_pool")
+    @patch("services.cache_service.ensure_pool", new_callable=AsyncMock)
     async def test_invalidate_deletes_personalization_rows(self, mock_get_pool):
         """invalidate_personalization deletes only personalization cache."""
         pool = _mock_pool()
@@ -128,7 +128,7 @@ class TestCacheServiceInvalidation:
         assert pool.execute.call_args[0][1] == 42
 
     @pytest.mark.asyncio
-    @patch("services.cache_service.get_pool")
+    @patch("services.cache_service.ensure_pool", new_callable=AsyncMock)
     async def test_invalidate_does_not_affect_translation(self, mock_get_pool):
         """Translation rows should NOT be deleted by invalidation."""
         pool = _mock_pool()

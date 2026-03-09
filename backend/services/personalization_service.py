@@ -11,7 +11,7 @@ from __future__ import annotations
 import os
 import pathlib
 
-from db import get_pool
+from db import ensure_pool
 from services.cache_service import get_cached, set_cached
 from services.agent_config import run_agent, personalization_agent
 from services.translation_service import extract_code_blocks
@@ -127,7 +127,7 @@ async def personalize_chapter(chapter_slug: str, user_id: int) -> dict[str, str]
             chapter_md = fh.read()
 
     # 2. Fetch user background
-    pool = get_pool()
+    pool = await ensure_pool()
     row = await pool.fetchrow(
         "SELECT python_level, robotics_experience, math_level, hardware_access, learning_goal "
         "FROM user_backgrounds WHERE user_id = $1",

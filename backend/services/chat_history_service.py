@@ -13,7 +13,7 @@ from __future__ import annotations
 import json
 import logging
 
-from db import get_pool
+from db import ensure_pool
 
 logger = logging.getLogger(__name__)
 
@@ -37,7 +37,7 @@ async def save_message(
     Returns:
         The ID of the newly created message.
     """
-    pool = get_pool()
+    pool = await ensure_pool()
     sources_json = json.dumps(sources or [])
     row = await pool.fetchrow(
         """
@@ -71,7 +71,7 @@ async def get_history(
     Returns:
         List of message dicts with id, question, answer, selected_text, sources, created_at.
     """
-    pool = get_pool()
+    pool = await ensure_pool()
 
     # Clamp limit to 100
     limit = min(limit, 100)
@@ -112,7 +112,7 @@ async def get_total_count(user_id: int) -> int:
     Returns:
         Total message count.
     """
-    pool = get_pool()
+    pool = await ensure_pool()
     row = await pool.fetchrow(
         "SELECT COUNT(*) as count FROM chat_messages WHERE user_id = $1",
         user_id,

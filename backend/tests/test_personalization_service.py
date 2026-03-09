@@ -130,7 +130,7 @@ class TestPersonalizeChapter:
         )
 
         with (
-            patch("services.personalization_service.get_pool", return_value=mock_pool),
+            patch("services.personalization_service.ensure_pool", new_callable=AsyncMock, return_value=mock_pool),
             patch("services.personalization_service.run_agent", new_callable=AsyncMock, return_value=llm_response),
             patch("services.personalization_service.get_cached", new_callable=AsyncMock, return_value=None),
             patch("services.personalization_service.set_cached", new_callable=AsyncMock),
@@ -169,7 +169,7 @@ class TestPersonalizeChapter:
         )
 
         with (
-            patch("services.personalization_service.get_pool", return_value=mock_pool),
+            patch("services.personalization_service.ensure_pool", new_callable=AsyncMock, return_value=mock_pool),
             patch("services.personalization_service.run_agent", new_callable=AsyncMock, return_value=llm_response),
             patch("services.personalization_service.get_cached", new_callable=AsyncMock, return_value=None),
             patch("services.personalization_service.set_cached", new_callable=AsyncMock),
@@ -202,7 +202,7 @@ class TestPersonalizeChapter:
         llm_response: str = "Beginner-friendly explanation.\n\n{{CODE_BLOCK_0}}"
 
         with (
-            patch("services.personalization_service.get_pool", return_value=mock_pool),
+            patch("services.personalization_service.ensure_pool", new_callable=AsyncMock, return_value=mock_pool),
             patch("services.personalization_service.run_agent", new_callable=AsyncMock, return_value=llm_response),
             patch("services.personalization_service.get_cached", new_callable=AsyncMock, return_value=None),
             patch("services.personalization_service.set_cached", new_callable=AsyncMock),
