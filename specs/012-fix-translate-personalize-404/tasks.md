@@ -17,9 +17,9 @@
 
 **Purpose**: Copy the 18 markdown files into `backend/docs/` so Railway includes them in the container. Update `railway.json` watch patterns.
 
-- [ ] T001 Copy `website/docs/` directory tree into `backend/docs/` preserving folder structure (18 files across intro/, module1-ros2/, module2-simulation/, module3-isaac/, module4-vla/)
-- [ ] T002 Verify `backend/docs/` contains all 18 expected markdown files matching `website/docs/` content exactly
-- [ ] T003 Update `watchPatterns` in `backend/railway.json` to include `backend/docs/**` so doc changes trigger redeploys
+- [X] T001 Copy `website/docs/` directory tree into `backend/docs/` preserving folder structure (18 files across intro/, module1-ros2/, module2-simulation/, module3-isaac/, module4-vla/)
+- [X] T002 Verify `backend/docs/` contains all 18 expected markdown files matching `website/docs/` content exactly
+- [X] T003 Update `watchPatterns` in `backend/railway.json` to include `backend/docs/**` so doc changes trigger redeploys
 
 ---
 
@@ -41,8 +41,8 @@
 
 ### Implementation for User Story 1
 
-- [ ] T004 [US1] Update `_DOCS_DIR` path resolution in `backend/routes/translate.py` (line 54) — set primary path to `Path(__file__).resolve().parent.parent / "docs"` with fallback to `Path(__file__).resolve().parent.parent.parent / "website" / "docs"` for local development
-- [ ] T005 [US1] Verify existing translate tests still pass by running `python -m pytest backend/tests/test_translate_api.py backend/tests/test_translation_service.py -v`
+- [X] T004 [US1] Update `_DOCS_DIR` path resolution in `backend/routes/translate.py` (line 54) — set primary path to `Path(__file__).resolve().parent.parent / "docs"` with fallback to `Path(__file__).resolve().parent.parent.parent / "website" / "docs"` for local development
+- [X] T005 [US1] Verify existing translate tests still pass by running `python -m pytest backend/tests/test_translate_api.py backend/tests/test_translation_service.py -v` — 16/16 PASSED
 
 **Checkpoint**: Translate endpoint resolves docs from `backend/docs/` on Railway and falls back to `website/docs/` locally. All translate tests pass.
 
@@ -56,8 +56,8 @@
 
 ### Implementation for User Story 2
 
-- [ ] T006 [US2] Update `_DOCS_ROOT` path resolution in `backend/services/personalization_service.py` (line 86) — set primary path to `pathlib.Path(__file__).resolve().parent.parent / "docs"` with fallback to `pathlib.Path(__file__).resolve().parent.parent.parent / "website" / "docs"` for local development
-- [ ] T007 [US2] Verify existing personalize tests still pass by running `python -m pytest backend/tests/test_personalization_service.py backend/tests/test_personalize_api.py backend/tests/test_personalize_cache.py -v`
+- [X] T006 [US2] Update `_DOCS_ROOT` path resolution in `backend/services/personalization_service.py` (line 86) — set primary path to `pathlib.Path(__file__).resolve().parent.parent / "docs"` with fallback to `pathlib.Path(__file__).resolve().parent.parent.parent / "website" / "docs"` for local development
+- [X] T007 [US2] Verify existing personalize tests still pass by running `python -m pytest backend/tests/test_personalization_service.py backend/tests/test_personalize_api.py backend/tests/test_personalize_cache.py -v` — 15/15 PASSED
 
 **Checkpoint**: Personalize endpoint resolves docs from `backend/docs/` on Railway and falls back to `website/docs/` locally. All personalize tests pass.
 
@@ -71,8 +71,8 @@
 
 ### Tests for User Story 3
 
-- [ ] T008 [P] [US3] Create `backend/tests/test_docs_available.py` — test that `backend/docs/` directory exists, contains exactly 18 `.md` files across 5 subdirectories, and that both primary and fallback path resolution logic works correctly
-- [ ] T009 [US3] Run full backend test suite: `cd backend && python -m pytest tests/ -v` — all 119+ existing tests plus the new test must pass (FR-008, SC-005)
+- [X] T008 [P] [US3] Create `backend/tests/test_docs_available.py` — test that `backend/docs/` directory exists, contains exactly 18 `.md` files across 5 subdirectories, and that both primary and fallback path resolution logic works correctly
+- [X] T009 [US3] Run full backend test suite: `cd backend && python -m pytest tests/ -v` — 142/142 PASSED (119 original + 23 new)
 
 ### Verification for User Story 3
 
