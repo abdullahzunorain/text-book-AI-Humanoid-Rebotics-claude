@@ -114,7 +114,7 @@ The textbook, chatbot, and all features work on mobile, tablet, and desktop.
 | **Relational Database** | Neon PostgreSQL (asyncpg) | Users, backgrounds, chat history, content cache |
 | **Auth** | bcrypt + JWT (HS256, 7-day expiry) | Secure authentication via httpOnly cookies |
 | **Frontend Hosting** | GitHub Pages | Free static site hosting with CI/CD |
-| **Backend Hosting** | Render / Railway | Python web service hosting |
+| **Backend Hosting** | Railway | Python web service hosting |
 
 ---
 
@@ -370,16 +370,17 @@ The frontend auto-deploys to GitHub Pages on every push to `main`:
 2. GitHub Actions (`.github/workflows/deploy.yml`) builds the site and deploys it
 3. Set the `API_URL` repository variable in GitHub → Settings → Variables to point to your deployed backend URL
 
-### Backend (Render)
+### Backend (Railway)
 
-1. Create a new **Web Service** on [render.com](https://render.com)
-2. Connect your GitHub repository
-3. Set **Root Directory** to `backend`
-4. Set **Build Command** to `pip install -r requirements.txt`
-5. Set **Start Command** to `uvicorn main:app --host 0.0.0.0 --port $PORT`
-6. Add environment variables: `GOOGLE_API_KEY`, `QDRANT_URL`, `QDRANT_API_KEY`, `DATABASE_URL`, `JWT_SECRET`, `CORS_ORIGINS`, `APP_ENV=production`
-
-A `render.yaml` is included for one-click Render deployment.
+1. Create a new project on [railway.app](https://railway.app) and connect your GitHub repository
+2. Set **Root Directory** to `backend`
+3. Railway auto-detects `railway.json` for build/deploy config (Nixpacks builder, start command, healthcheck)
+4. Add environment variables in the Railway dashboard:
+   - `GOOGLE_API_KEY`, `QDRANT_URL`, `QDRANT_API_KEY`, `DATABASE_URL`, `JWT_SECRET`
+   - `APP_ENV=production`
+   - `CORS_ORIGINS=https://abdullahzunorain.github.io` (your GitHub Pages URL)
+5. Ensure `DATABASE_URL` does **not** contain `channel_binding=require` (Neon default — remove it)
+6. Deployments trigger automatically on push to `main` (only for `backend/**` changes via `watchPatterns`)
 
 ---
 
@@ -441,7 +442,6 @@ A `render.yaml` is included for one-click Render deployment.
 ├── .github/
 │   └── workflows/
 │       └── deploy.yml                 # GitHub Actions: build & deploy frontend
-├── render.yaml                        # Render.com backend deployment config
 ├── .gitignore
 └── README.md                          # You are here
 ```
