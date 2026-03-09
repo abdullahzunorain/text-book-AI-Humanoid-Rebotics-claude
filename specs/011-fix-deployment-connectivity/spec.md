@@ -2,7 +2,7 @@
 
 **Feature Branch**: `011-fix-deployment-connectivity`  
 **Created**: 2026-03-09  
-**Status**: Draft  
+**Status**: Complete  
 **Input**: User description: "Fix Deployment Connectivity — diagnose /health 502, verify Railway env vars, trigger frontend redeploy with correct API_URL, end-to-end verification of full-stack flow"
 
 ## User Scenarios & Testing *(mandatory)*
