@@ -2,7 +2,7 @@
 
 **Feature Branch**: `012-fix-translate-personalize-404`  
 **Created**: 2026-03-09  
-**Status**: Draft  
+**Status**: Complete  
 **Input**: User description: "Fix translate and personalize 404 errors on Railway — docs markdown files not bundled in backend container, causing chapter-dependent endpoints to fail. Ensure each FastAPI functionality works perfectly in production."
 
 ## User Scenarios & Testing *(mandatory)*
