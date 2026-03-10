@@ -110,7 +110,6 @@ export default function ChatbotWidget(): React.JSX.Element {
 
     setValidationMsg(null);
     setError(null);
-    setSelectedContext(null); // Clear after sending
     setMessages(prev => [...prev, { role: 'user', content: question }]);
     setInput('');
     setIsLoading(true);

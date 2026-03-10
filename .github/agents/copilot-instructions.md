@@ -23,6 +23,8 @@ Auto-generated from all feature plans. Last updated: 2026-03-04
 - Neon PostgreSQL (via `DATABASE_URL`), Qdrant Cloud (vector store) (011-fix-deployment-connectivity)
 - Python 3.13 + FastAPI 0.115+, Pydantic, asyncpg, qdrant-client, google-generativeai (012-fix-translate-personalize-404)
 - Neon PostgreSQL (via asyncpg), Qdrant Cloud (vectors), filesystem (chapter markdown) (012-fix-translate-personalize-404)
+- Python 3.13.2 (backend), TypeScript/React 19 (frontend) + FastAPI 0.115.12, OpenAI Agents SDK, Docusaurus 3.9.2, asyncpg (013-fix-chatbot-selection)
+- Neon PostgreSQL (asyncpg, pool 2–10), Qdrant vector DB (3072-dim Gemini embeddings) (013-fix-chatbot-selection)
 
 - Python 3.12+ (backend, uv), TypeScript/React 19 (frontend, Docusaurus 3.9.2) + FastAPI, google-genai (gemini-2.5-flash, gemini-embedding-001), qdrant-client, asyncpg, python-jose[cryptography], passlib[bcrypt], custom AuthProvider.tsx (frontend) (002-mvp2-complete-textbook)
 
@@ -53,9 +55,9 @@ cd website && npm run build
 - TypeScript: strict mode, React functional components with hooks
 
 ## Recent Changes
+- 013-fix-chatbot-selection: Added Python 3.13.2 (backend), TypeScript/React 19 (frontend) + FastAPI 0.115.12, OpenAI Agents SDK, Docusaurus 3.9.2, asyncpg
 - 012-fix-translate-personalize-404: Added Python 3.13 + FastAPI 0.115+, Pydantic, asyncpg, qdrant-client, google-generativeai
 - 011-fix-deployment-connectivity: Added Python 3.13 (backend), TypeScript/Node 20 (frontend build) + FastAPI 0.115+, uvicorn, asyncpg, Docusaurus 3.9
-- 010-fix-railway-deploy: Added Python 3.13 (Nixpacks auto-detected from `runtime.txt`) + FastAPI 0.135+, uvicorn, asyncpg, openai-agents, qdrant-client, python-jose, bcrypt
 
 
 <!-- MANUAL ADDITIONS START -->
