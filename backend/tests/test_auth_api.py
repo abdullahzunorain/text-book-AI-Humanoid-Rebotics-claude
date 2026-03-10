@@ -132,6 +132,22 @@ class TestSignin:
         )
         assert response.status_code == 401
 
+    @patch("routes.auth.ensure_pool", new_callable=AsyncMock)
+    @patch.dict(os.environ, {"JWT_SECRET": "test-secret-key-for-unit-tests"})
+    def test_signin_null_password_hash_returns_401(self, mock_get_pool: MagicMock) -> None:
+        """POST /api/auth/signin with NULL password_hash → 401 (not 500)."""
+        pool = _mock_pool()
+        pool.fetchrow = AsyncMock(
+            return_value={"id": 1, "email": "user@example.com", "password_hash": None}
+        )
+        mock_get_pool.return_value = pool
+
+        response = client.post(
+            "/api/auth/signin",
+            json={"email": "user@example.com", "password": "AnyPassword123!"},
+        )
+        assert response.status_code == 401
+
 
 class TestSignout:
     """Tests for POST /api/auth/signout."""

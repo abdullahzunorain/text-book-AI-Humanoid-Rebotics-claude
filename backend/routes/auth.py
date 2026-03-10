@@ -136,8 +136,8 @@ async def signin(body: SigninRequest, response: Response) -> dict[str, Any]:
     if not user:
         raise HTTPException(status_code=401, detail="Invalid email or password")
 
-    # Verify password
-    if not verify_password(body.password, user["password_hash"]):
+    # Verify password (guard against NULL/empty password_hash)
+    if not user["password_hash"] or not verify_password(body.password, user["password_hash"]):
         raise HTTPException(status_code=401, detail="Invalid email or password")
 
     # Check if background exists

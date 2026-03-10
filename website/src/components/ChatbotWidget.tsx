@@ -154,7 +154,7 @@ export default function ChatbotWidget(): React.JSX.Element {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [selectedContext]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -170,15 +170,17 @@ export default function ChatbotWidget(): React.JSX.Element {
 
   return (
     <>
-      {/* Floating toggle button */}
-      <button
-        className="chatbot-toggle"
-        onClick={() => setIsOpen(!isOpen)}
-        aria-label={isOpen ? 'Close chatbot' : 'Open chatbot'}
-        title="AI Study Companion"
-      >
-        {isOpen ? '✕' : '💬'}
-      </button>
+      {/* Floating toggle button — hidden when panel is open to avoid duplicate close */}
+      {!isOpen && (
+        <button
+          className="chatbot-toggle"
+          onClick={() => setIsOpen(true)}
+          aria-label="Open chatbot"
+          title="AI Study Companion"
+        >
+          💬
+        </button>
+      )}
 
       {/* Chat panel */}
       {isOpen && (
