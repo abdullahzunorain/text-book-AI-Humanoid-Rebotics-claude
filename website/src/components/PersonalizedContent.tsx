@@ -6,8 +6,6 @@ import React from 'react';
 interface PersonalizedContentProps {
   /** Personalized markdown content from Gemini */
   personalizedContent: string;
-  /** Callback when user clicks "Show Original" */
-  onShowOriginal: () => void;
 }
 
 /**
@@ -40,7 +38,6 @@ function simpleMarkdownToHtml(md: string): string {
  */
 export default function PersonalizedContent({
   personalizedContent,
-  onShowOriginal,
 }: PersonalizedContentProps): React.JSX.Element {
   const renderContent = (): React.JSX.Element[] => {
     // Strip YAML frontmatter (---\n...\n---) if present
@@ -88,12 +85,6 @@ export default function PersonalizedContent({
           fontSize: '0.9rem',
         }}>
         <span>🎯 Personalized for your learning profile</span>
-        <button
-          onClick={onShowOriginal}
-          className="button button--outline button--sm"
-          type="button">
-          Show Original
-        </button>
       </div>
       {renderContent()}
     </div>

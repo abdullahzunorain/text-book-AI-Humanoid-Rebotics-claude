@@ -6,8 +6,6 @@ import React from 'react';
 interface UrduContentProps {
   /** Translated markdown content (Urdu prose with English code blocks) */
   translatedContent: string;
-  /** Callback when user clicks "Read in English" */
-  onShowEnglish: () => void;
 }
 
 /**
@@ -16,7 +14,6 @@ interface UrduContentProps {
  */
 export default function UrduContent({
   translatedContent,
-  onShowEnglish,
 }: UrduContentProps): React.JSX.Element {
   // Simple markdown rendering: convert code blocks to <pre><code>
   // and prose to paragraphs. For full markdown, a markdown renderer
@@ -55,13 +52,6 @@ export default function UrduContent({
 
   return (
     <div className="urdu-content" dir="rtl">
-      <button
-        onClick={onShowEnglish}
-        className="button button--outline button--sm"
-        style={{marginBottom: '1rem'}}
-        type="button">
-        Read in English
-      </button>
       {renderContent()}
     </div>
   );

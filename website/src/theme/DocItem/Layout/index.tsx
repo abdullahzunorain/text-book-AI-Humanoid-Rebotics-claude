@@ -88,14 +88,12 @@ export default function LayoutWrapper(props: Props): React.JSX.Element {
         <div style={{padding: '0 var(--ifm-spacing-horizontal)'}}>
           <UrduContent
             translatedContent={translatedContent}
-            onShowEnglish={handleShowEnglish}
           />
         </div>
       ) : isPersonalizedActive && personalizedContent ? (
         <div style={{padding: '0 var(--ifm-spacing-horizontal)'}}>
           <PersonalizedContent
             personalizedContent={personalizedContent}
-            onShowOriginal={handleShowOriginal}
           />
         </div>
       ) : (
